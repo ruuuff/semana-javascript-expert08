@@ -1,11 +1,15 @@
-import View from './view.js';
-import Clock from './deps/clock.js';
+import View from './view.js'
+import Clock from './deps/clock.js'
 const view = new View()
 const clock = new Clock()
 
 const worker = new Worker('./src/worker/worker.js', {
-	type: 'module'
+	type: 'module',
 })
+
+worker.onerror = (error) => {
+	console.error('error worker', error)
+}
 
 worker.onmessage = ({ data }) => {
 	if (data.status !== 'done') return;
@@ -15,7 +19,8 @@ worker.onmessage = ({ data }) => {
 
 let took = ''
 view.configureOnFileChange(file => {
-	worker.postMessage({ file })
+	const canvas = view.getCanvas()
+	worker.postMessage({ file, canvas }, [canvas])
 	
 	clock.start((time) => {
 		took = time;
@@ -36,7 +41,7 @@ async function fakeFetch() {
 
 	const file = new File([await response.blob()], filePath, {
 		type: 'vide/mp4',
-		lastModified: Date.now()
+		lastModified: Date.now(),
 	})
 
 	const event = new Event('change')

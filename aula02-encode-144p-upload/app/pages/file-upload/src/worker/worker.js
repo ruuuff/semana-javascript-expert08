@@ -24,6 +24,7 @@ const encoderConfig = {
   codec: 'vp09.00.10.08',
   pt: 4,
   hardwareAcceleration: 'prefer-software',
+  
   // MP4
   // codec: 'avc1.42002A',
   // pt: 1,

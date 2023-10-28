@@ -54,7 +54,7 @@ export default class VideoProcessor {
           const message = 'encode144 VideoEncoder config not supported!'
           console.error(message, encoderConfig)
           controller.error(message)
-          return
+          return;
         }
 
         _encoder = new VideoEncoder({
@@ -97,7 +97,7 @@ export default class VideoProcessor {
   renderDecodedFramesAndGetEncodedChunks(renderFrame) {
     let _decoder;
     return new TransformStream({
-      start(controller) {
+      start: (controller) => {
         _decoder = new VideoDecoder({
           output(frame) {
             renderFrame(frame)
@@ -193,7 +193,7 @@ export default class VideoProcessor {
       .pipeThrough(this.encode144p(encoderConfig))
       .pipeThrough(this.renderDecodedFramesAndGetEncodedChunks(renderFrame))
       .pipeThrough(this.transformIntoWebM())
-      // Salvar na máquina
+      // Pipe para salvar na máquina
       // .pipeThrough(
       //   new TransformStream({
       //     transform: ({ data, position }, controller) => {

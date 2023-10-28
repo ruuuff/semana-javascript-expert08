@@ -16,9 +16,7 @@ worker.onmessage = ({ data }) => {
 	clock.stop()
 	view.updateElapsedTime(`Process took ${took.replace('ago', '')}`)
 	if (!data.buffers) return;
-	console.log('feito')
 	// view.downloadBlobAsFile(data.buffers, data.filename)
-	// debugger
 }
 
 let took = ''
